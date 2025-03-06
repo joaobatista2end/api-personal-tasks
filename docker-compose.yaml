@@ -15,11 +15,13 @@ services:
       - "8000:8000"
     volumes:
       - ./api:/app
+      - vendor_volume:/app/vendor
     networks:
       - app-network
     restart: unless-stopped
     depends_on:
       - database
+    build: .
 
   database:
     image: bitnami/mariadb:11.4.5
@@ -33,6 +35,9 @@ services:
     volumes:
       - ./database:/bitnami/mariadb
     restart: unless-stopped
+
+volumes:
+  vendor_volume:
 
 networks:
   app-network:
