@@ -1,1 +1,15 @@
 @import "tailwindcss";
+
+* {
+    @apply box-border;
+}
+
+@layer components {
+    @keyframes blink {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 1; }
+    }
+    .animate-blink {
+        animation: blink 1.4s infinite;
+    }
+}

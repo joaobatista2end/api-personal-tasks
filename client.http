@@ -7,8 +7,8 @@ POST http://localhost:8000/api/tasks
 Content-Type: application/json
 
 {
-    "title": "Aprender Laravel",
-    "description": "Estudar sobre controllers e rotas",
+    "title": "Fazer 1h de caminhada",
+    "description": "Fazer exercício físico",
     "completed": false,
     "category": "health"
 }
