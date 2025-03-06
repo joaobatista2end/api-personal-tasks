@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  app:
+    image: bitnami/laravel:11.6.1
+    environment:
+      LARAVEL_PORT_NUMBER: 8000
+      LARAVEL_DATABASE_TYPE: "mysql"
+      LARAVEL_DATABASE_HOST: "database"
+      LARAVEL_DATABASE_PORT_NUMBER: 3306
+      LARAVEL_DATABASE_NAME: "app_database"
+      LARAVEL_DATABASE_USER: "app_user"
+      LARAVEL_DATABASE_PASSWORD: "app_password"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app
+    networks:
+      - app-network
+    restart: unless-stopped
+    depends_on:
+      - database
+
+  database:
+    image: bitnami/mariadb:11.4.5
+    environment:
+      MARIADB_ROOT_PASSWORD: "root_password"
+      MARIADB_DATABASE: "app_database"
+      MARIADB_USER: "app_user"
+      MARIADB_PASSWORD: "app_password"
+    networks:
+      - app-network
+    volumes:
+      - ./database:/bitnami/mariadb
+    restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge

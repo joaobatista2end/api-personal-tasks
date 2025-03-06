@@ -1,0 +1,6 @@
+models:
+  Task:
+    title: string
+    description: text nullable
+    completed: boolean default:false
+    category: enum:health,work,home,recriation

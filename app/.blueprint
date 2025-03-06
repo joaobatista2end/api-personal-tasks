@@ -1,0 +1,6 @@
+created:
+    - database/factories/TaskFactory.php
+    - database/migrations/2025_03_06_012917_create_tasks_table.php
+    - app/Models/Task.php
+models:
+    Task: { title: string, description: 'text nullable', completed: 'boolean default:false', category: 'enum:health,work,home,recriation' }

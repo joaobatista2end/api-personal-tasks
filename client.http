@@ -1,0 +1,31 @@
+#### Listar todas as tarefas
+GET http://localhost:8000/api/tasks
+Accept: application/json
+
+### Criar uma nova tarefa
+POST http://localhost:8000/api/tasks
+Content-Type: application/json
+
+{
+    "title": "Aprender Laravel",
+    "description": "Estudar sobre controllers e rotas",
+    "completed": false,
+    "category": "health"
+}
+
+### Obter uma tarefa específica
+GET http://localhost:8000/api/tasks/1
+Accept: application/json
+
+### Atualizar uma tarefa
+PATCH http://localhost:8000/api/tasks/1
+Content-Type: application/json
+
+{
+    "category": "work"
+}
+
+### Deletar uma tarefa
+DELETE http://localhost:8000/api/tasks/1
+Accept: application/json
+
