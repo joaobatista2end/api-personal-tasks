@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { debounce } from '../shared/utils/debounce';
 import { Loading } from './components/Loading';
+import { TaskForm } from './components/TaskForm';
 import { TaskGroup } from './components/TaskGroup';
 import { TaskService } from './service';
 import { TaskDto } from './types';
@@ -56,20 +57,24 @@ export const TaskList = () => {
   if (loading) return <Loading />;
   
   return (
-    <div className="max-w-screen-md bg-gray-100/50 rounded-md mx-auto p-4 mt-4 space-y-1 flex gap-x-4">
-      <TaskGroup 
-        title="Tarefas"
-        tasks={tasks}
-        taskLoading={taskLoading}
-        onToggle={toggleTask}
-      />
+    <div className="max-w-screen-md mx-auto p-4 mt-4 space-y-4">
+      <TaskForm onTaskCreated={fetchTasks} />
       
-      <TaskGroup 
-        title="Tarefas Concluídas"
-        tasks={completedTasks}
-        taskLoading={taskLoading}
-        onToggle={toggleTask}
-      />
+      <div className="bg-gray-100/50 rounded-md p-4 flex gap-x-4">
+        <TaskGroup 
+          title="Tarefas"
+          tasks={tasks}
+          taskLoading={taskLoading}
+          onToggle={toggleTask}
+        />
+        
+        <TaskGroup 
+          title="Tarefas Concluídas"
+          tasks={completedTasks}
+          taskLoading={taskLoading}
+          onToggle={toggleTask}
+        />
+      </div>
     </div>
   );
 };
