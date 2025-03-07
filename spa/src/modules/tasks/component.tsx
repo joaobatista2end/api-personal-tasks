@@ -5,12 +5,14 @@ import { TaskForm } from './components/TaskForm';
 import { TaskGroup } from './components/TaskGroup';
 import { TaskService } from './service';
 import { TaskDto } from './types';
+import { PlusIcon } from "lucide-react";
 
 export const TaskList = () => {
   const [tasks, setTasks] = useState<TaskDto[]>([]);
   const [completedTasks, setCompletedTasks] = useState<TaskDto[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [taskLoading, setTaskLoading] = useState<string>('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchTasks = async () => {
     try {
@@ -58,7 +60,24 @@ export const TaskList = () => {
   
   return (
     <div className="max-w-screen-md mx-auto p-4 mt-4 space-y-4">
-      <TaskForm onTaskCreated={fetchTasks} />
+      <div className="flex justify-end">
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="cursor-pointer px-4 inline-flex items-center gap-2 py-2 text-white bg-green-600 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        >
+          Nova Tarefa
+          <PlusIcon className="w-4 h-4" />
+        </button>
+      </div>
+
+      <TaskForm 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onTaskCreated={() => {
+          fetchTasks();
+          setIsModalOpen(false);
+        }}
+      />
       
       <div className="bg-gray-100/50 rounded-md p-4 flex gap-x-4">
         <TaskGroup 
