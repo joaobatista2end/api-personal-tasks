@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { debounce } from '../shared/utils/debounce';
 import { Loading } from './components/Loading';
 import { TaskForm } from './components/TaskForm';
@@ -13,6 +13,7 @@ export const TaskList = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [taskLoading, setTaskLoading] = useState<string>('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const effectRan = useRef(false);
 
   const fetchTasks = async () => {
     try {
@@ -52,8 +53,31 @@ export const TaskList = () => {
     }
   }, 500);
 
+  const handleDelete = async (task: TaskDto) => {
+    if (!confirm('Tem certeza que deseja remover esta tarefa?')) return;
+    
+    try {
+      setTaskLoading(task.id);
+      await TaskService.deleteTask(task.id);
+      
+      if (task.completed) {
+        setCompletedTasks(completedTasks.filter(t => t.id !== task.id));
+      } else {
+        setTasks(tasks.filter(t => t.id !== task.id));
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setTaskLoading('');
+    }
+  };
+
   useEffect(() => {
+    if (effectRan.current) return;
+    
     fetchTasks();
+    
+    effectRan.current = true;
   }, []);
 
   if (loading) return <Loading />;
@@ -85,6 +109,7 @@ export const TaskList = () => {
           tasks={tasks}
           taskLoading={taskLoading}
           onToggle={toggleTask}
+          onDelete={handleDelete}
         />
         
         <TaskGroup 
@@ -92,6 +117,7 @@ export const TaskList = () => {
           tasks={completedTasks}
           taskLoading={taskLoading}
           onToggle={toggleTask}
+          onDelete={handleDelete}
         />
       </div>
     </div>
