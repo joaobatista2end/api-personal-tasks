@@ -22,8 +22,7 @@ export const TaskItem = ({
       } `}
     >
       <TaskIcon category={task.category} />
-      <div className="flex items-center gap-x-2 px-2 py-1">
-
+      <div className="flex items-center gap-x-2 px-2">
         <div
           onClick={(e) => {
             e.stopPropagation();
