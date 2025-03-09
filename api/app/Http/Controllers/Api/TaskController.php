@@ -21,7 +21,7 @@ class TaskController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'completed' => 'boolean',
-            'category' => 'required|in:work,personal,health'
+            'category' => 'required|in:work,health,home,recreation'
         ]);
 
         $task = Task::create($request->all());
@@ -40,7 +40,7 @@ class TaskController extends Controller
             'title' => 'sometimes|required|string|max:255',
             'description' => 'sometimes|nullable|string',
             'completed' => 'sometimes|boolean',
-            'category' => 'sometimes|required|in:work,personal,health'
+            'category' => 'sometimes|required|in:work,health,home,recreation'
         ]);
 
         $task->update($validated);
@@ -55,7 +55,7 @@ class TaskController extends Controller
             'title' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
             'completed' => 'boolean',
-            'category' => 'required|in:work,personal,health'
+            'category' => 'required|in:work,health,home,recreation'
         ]);
 
         $task->update($request->all());
