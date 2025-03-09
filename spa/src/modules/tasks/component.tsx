@@ -6,6 +6,7 @@ import { TaskGroup } from './components/TaskGroup';
 import { TaskService } from './service';
 import { TaskDto } from './types';
 import { PlusIcon } from "lucide-react";
+import { Confirm } from '../shared/components/Confirm';
 
 export const TaskList = () => {
   const [tasks, setTasks] = useState<TaskDto[]>([]);
@@ -13,6 +14,13 @@ export const TaskList = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [taskLoading, setTaskLoading] = useState<string>('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState<{
+    isOpen: boolean;
+    task: TaskDto | null;
+  }>({
+    isOpen: false,
+    task: null,
+  });
   const effectRan = useRef(false);
 
   const fetchTasks = async () => {
@@ -54,8 +62,16 @@ export const TaskList = () => {
   }, 500);
 
   const handleDelete = async (task: TaskDto) => {
-    if (!confirm('Tem certeza que deseja remover esta tarefa?')) return;
-    
+    setDeleteConfirm({
+      isOpen: true,
+      task,
+    });
+  };
+
+  const confirmDelete = async () => {
+    const task = deleteConfirm.task;
+    if (!task) return;
+
     try {
       setTaskLoading(task.id);
       await TaskService.deleteTask(task.id);
@@ -120,6 +136,21 @@ export const TaskList = () => {
           onDelete={handleDelete}
         />
       </div>
+
+      <Confirm
+        isOpen={deleteConfirm.isOpen}
+        onClose={() => setDeleteConfirm({ isOpen: false, task: null })}
+        onConfirm={confirmDelete}
+        title="Remover Tarefa"
+        variant="danger"
+      >
+        Tem certeza que deseja remover esta tarefa?
+        {deleteConfirm.task && (
+          <p className="mt-2 text-sm font-medium text-gray-500">
+            "{deleteConfirm.task.title}"
+          </p>
+        )}
+      </Confirm>
     </div>
   );
 };
